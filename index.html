@@ -1,0 +1,1349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rahul Shankar | Azure Cloud Engineer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-tertiary: #1a1a24;
+            --bg-card: #16161f;
+            --text-primary: #e8e8ed;
+            --text-secondary: #8b8b9a;
+            --text-muted: #5a5a6a;
+            --accent-azure: #0078d4;
+            --accent-cyan: #00d4ff;
+            --accent-green: #00ff9d;
+            --accent-purple: #8b5cf6;
+            --accent-orange: #ff6b35;
+            --border-color: #2a2a3a;
+            --gradient-azure: linear-gradient(135deg, #0078d4 0%, #00d4ff 100%);
+            --gradient-success: linear-gradient(135deg, #00ff9d 0%, #00d4ff 100%);
+            --font-mono: 'JetBrains Mono', monospace;
+            --font-sans: 'Outfit', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Grid Background */
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 120, 212, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 120, 212, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Floating Particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--accent-cyan);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: float 20s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.3; }
+            90% { opacity: 0.3; }
+            100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+        }
+
+        .logo {
+            font-family: var(--font-mono);
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--accent-cyan);
+        }
+
+        .logo span {
+            color: var(--text-muted);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-azure);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 8rem 3rem 4rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-content {
+            max-width: 900px;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(0, 255, 157, 0.1);
+            border: 1px solid rgba(0, 255, 157, 0.3);
+            border-radius: 100px;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--accent-green);
+            margin-bottom: 2rem;
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(0, 255, 157, 0.1); }
+            50% { box-shadow: 0 0 30px rgba(0, 255, 157, 0.2); }
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            animation: blink 1.5s ease-in-out infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero h1 .highlight {
+            background: var(--gradient-azure);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-family: var(--font-mono);
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .hero-subtitle::before {
+            content: '>';
+            color: var(--accent-cyan);
+        }
+
+        .hero-description {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            max-width: 650px;
+            margin-bottom: 3rem;
+            line-height: 1.8;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 3rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            text-align: left;
+        }
+
+        .stat-value {
+            font-family: var(--font-mono);
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: var(--gradient-success);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            font-weight: 500;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--gradient-azure);
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px rgba(0, 120, 212, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+
+        /* Skills Section */
+        .skills {
+            padding: 6rem 3rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .section-header {
+            margin-bottom: 4rem;
+        }
+
+        .section-label {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--accent-azure);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .section-label::before {
+            content: '';
+            width: 30px;
+            height: 1px;
+            background: var(--accent-azure);
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .skill-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-azure);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-azure);
+        }
+
+        .skill-card:hover::before {
+            opacity: 1;
+        }
+
+        .skill-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(0, 120, 212, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .skill-card h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .skill-tag {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            padding: 0.35rem 0.75rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-secondary);
+        }
+
+        /* Projects Section */
+        .projects {
+            padding: 6rem 3rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .projects-grid {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .project-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2.5rem;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 2rem;
+            align-items: start;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(0, 120, 212, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-azure);
+            box-shadow: 0 20px 60px rgba(0, 120, 212, 0.1);
+        }
+
+        .project-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .project-date {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--accent-cyan);
+            margin-bottom: 0.75rem;
+        }
+
+        .project-card h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .project-card p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tech-tag {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            padding: 0.4rem 0.8rem;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 6px;
+            color: var(--accent-cyan);
+        }
+
+        .project-metrics {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .metric {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .metric-value {
+            font-family: var(--font-mono);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-green);
+        }
+
+        .metric-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .project-status {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--accent-green);
+            padding: 0.5rem 1rem;
+            background: rgba(0, 255, 157, 0.1);
+            border-radius: 100px;
+        }
+
+        /* Experience Section */
+        .experience {
+            padding: 6rem 3rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 3rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, var(--accent-azure), var(--accent-cyan), var(--accent-green));
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-bottom: 3rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -3rem;
+            top: 0.5rem;
+            width: 12px;
+            height: 12px;
+            background: var(--accent-cyan);
+            border-radius: 50%;
+            box-shadow: 0 0 20px var(--accent-cyan);
+        }
+
+        .timeline-date {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--accent-azure);
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-item h3 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .timeline-company {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .timeline-item ul {
+            list-style: none;
+        }
+
+        .timeline-item li {
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+            padding-left: 1.5rem;
+            position: relative;
+            line-height: 1.7;
+        }
+
+        .timeline-item li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent-cyan);
+        }
+
+        /* Certifications */
+        .certifications {
+            padding: 6rem 3rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .certs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .cert-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .cert-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-azure);
+        }
+
+        .cert-badge {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            background: var(--gradient-azure);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .cert-card h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .cert-card p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 6rem 3rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .contact-info h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-info p {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .contact-links {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .contact-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-family: var(--font-mono);
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
+
+        .contact-link:hover {
+            color: var(--accent-cyan);
+        }
+
+        .contact-link svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .terminal-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .terminal-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 1.5rem;
+            background: var(--bg-tertiary);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .terminal-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .terminal-dot.red { background: #ff5f57; }
+        .terminal-dot.yellow { background: #febc2e; }
+        .terminal-dot.green { background: #28c840; }
+
+        .terminal-body {
+            padding: 1.5rem;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+        }
+
+        .terminal-line {
+            margin-bottom: 0.75rem;
+            opacity: 0;
+            animation: typeLine 0.5s ease forwards;
+        }
+
+        .terminal-line:nth-child(1) { animation-delay: 0.2s; }
+        .terminal-line:nth-child(2) { animation-delay: 0.5s; }
+        .terminal-line:nth-child(3) { animation-delay: 0.8s; }
+        .terminal-line:nth-child(4) { animation-delay: 1.1s; }
+        .terminal-line:nth-child(5) { animation-delay: 1.4s; }
+
+        @keyframes typeLine {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .terminal-prompt {
+            color: var(--accent-green);
+        }
+
+        .terminal-command {
+            color: var(--text-primary);
+        }
+
+        .terminal-output {
+            color: var(--text-secondary);
+            padding-left: 1rem;
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            position: relative;
+            z-index: 2;
+        }
+
+        footer p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        footer span {
+            color: var(--accent-cyan);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem 1.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero, .skills, .projects, .experience, .certifications, .contact {
+                padding: 4rem 1.5rem;
+            }
+
+            .hero-stats {
+                gap: 2rem;
+            }
+
+            .stat-value {
+                font-size: 2rem;
+            }
+
+            .project-card {
+                grid-template-columns: 1fr;
+            }
+
+            .project-status {
+                align-items: flex-start;
+            }
+
+            .contact-content {
+                grid-template-columns: 1fr;
+            }
+
+            .timeline {
+                padding-left: 2rem;
+            }
+
+            .timeline-item::before {
+                left: -2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-bg"></div>
+    
+    <div class="particles">
+        <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+        <div class="particle" style="left: 20%; animation-delay: 3s;"></div>
+        <div class="particle" style="left: 35%; animation-delay: 6s;"></div>
+        <div class="particle" style="left: 50%; animation-delay: 9s;"></div>
+        <div class="particle" style="left: 65%; animation-delay: 12s;"></div>
+        <div class="particle" style="left: 80%; animation-delay: 15s;"></div>
+        <div class="particle" style="left: 90%; animation-delay: 18s;"></div>
+    </div>
+
+    <nav>
+        <div class="logo">rahul<span>.shankar</span></div>
+        <ul class="nav-links">
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#certifications">Certifications</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <div class="status-badge">
+                <span class="status-dot"></span>
+                Available for opportunities
+            </div>
+            <h1>I build <span class="highlight">scalable cloud</span> infrastructure that runs itself</h1>
+            <p class="hero-subtitle">Azure Cloud Engineer & Infrastructure Automation Specialist</p>
+            <p class="hero-description">
+                Architecting enterprise-grade Azure solutions with a focus on automation, security, and operational excellence. 
+                I transform complex infrastructure challenges into elegant, self-healing systems that scale.
+            </p>
+            <div class="hero-stats">
+                <div class="stat">
+                    <div class="stat-value">62+</div>
+                    <div class="stat-label">Clients Served</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">70%</div>
+                    <div class="stat-label">Deployment Time Reduced</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">50+</div>
+                    <div class="stat-label">Hours Saved Monthly</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">5+</div>
+                    <div class="stat-label">Years Experience</div>
+                </div>
+            </div>
+            <div class="hero-cta">
+                <a href="#projects" class="btn btn-primary">
+                    View Projects
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+                <a href="#contact" class="btn btn-secondary">Get in Touch</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="skills" id="skills">
+        <div class="section-header">
+            <p class="section-label">Technical Expertise</p>
+            <h2 class="section-title">Skills & Technologies</h2>
+        </div>
+        <div class="skills-grid">
+            <div class="skill-card">
+                <div class="skill-icon">☁️</div>
+                <h3>Cloud & Infrastructure</h3>
+                <div class="skill-tags">
+                    <span class="skill-tag">Azure</span>
+                    <span class="skill-tag">AVD</span>
+                    <span class="skill-tag">Networking</span>
+                    <span class="skill-tag">Hybrid Cloud</span>
+                    <span class="skill-tag">Virtual WAN</span>
+                    <span class="skill-tag">ExpressRoute</span>
+                </div>
+            </div>
+            <div class="skill-card">
+                <div class="skill-icon">🏗️</div>
+                <h3>Infrastructure as Code</h3>
+                <div class="skill-tags">
+                    <span class="skill-tag">Terraform</span>
+                    <span class="skill-tag">Bicep</span>
+                    <span class="skill-tag">ARM Templates</span>
+                    <span class="skill-tag">Ansible</span>
+                </div>
+            </div>
+            <div class="skill-card">
+                <div class="skill-icon">⚡</div>
+                <h3>Automation & Scripting</h3>
+                <div class="skill-tags">
+                    <span class="skill-tag">PowerShell</span>
+                    <span class="skill-tag">Bash</span>
+                    <span class="skill-tag">Python</span>
+                    <span class="skill-tag">Logic Apps</span>
+                    <span class="skill-tag">Azure Automation</span>
+                </div>
+            </div>
+            <div class="skill-card">
+                <div class="skill-icon">🔄</div>
+                <h3>DevOps & CI/CD</h3>
+                <div class="skill-tags">
+                    <span class="skill-tag">Azure DevOps</span>
+                    <span class="skill-tag">GitHub Actions</span>
+                    <span class="skill-tag">CI/CD Pipelines</span>
+                    <span class="skill-tag">AKS</span>
+                </div>
+            </div>
+            <div class="skill-card">
+                <div class="skill-icon">🛡️</div>
+                <h3>Security & Governance</h3>
+                <div class="skill-tags">
+                    <span class="skill-tag">Key Vault</span>
+                    <span class="skill-tag">Defender</span>
+                    <span class="skill-tag">PIM</span>
+                    <span class="skill-tag">Azure Policies</span>
+                    <span class="skill-tag">Sentinel</span>
+                </div>
+            </div>
+            <div class="skill-card">
+                <div class="skill-icon">📊</div>
+                <h3>Monitoring & Observability</h3>
+                <div class="skill-tags">
+                    <span class="skill-tag">Azure Monitor</span>
+                    <span class="skill-tag">Sentinel</span>
+                    <span class="skill-tag">Grafana</span>
+                    <span class="skill-tag">Log Analytics</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="projects" id="projects">
+        <div class="section-header">
+            <p class="section-label">Featured Work</p>
+            <h2 class="section-title">Projects & Achievements</h2>
+        </div>
+        <div class="projects-grid">
+            
+            <article class="project-card">
+                <div class="project-content">
+                    <span class="project-date">Nov 2025 - Dec 2025</span>
+                    <h3>Cross-Tenant Azure Infrastructure Deployment</h3>
+                    <p>
+                        Engineered automated cross-tenant Azure infrastructure deployment using Terraform with modular templates for VNets, NSGs, and compute resources. 
+                        Implemented Service Principal authentication via Key Vault for secure cross-tenant access, enabling consistent, repeatable infrastructure at scale.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Terraform</span>
+                        <span class="tech-tag">Azure</span>
+                        <span class="tech-tag">Key Vault</span>
+                        <span class="tech-tag">Service Principals</span>
+                        <span class="tech-tag">IaC</span>
+                    </div>
+                    <div class="project-metrics">
+                        <div class="metric">
+                            <span class="metric-value">2-3 weeks → Same Day</span>
+                            <span class="metric-label">Deployment Time</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-status">
+                    <span class="status-indicator">
+                        <span class="status-dot"></span>
+                        Completed
+                    </span>
+                </div>
+            </article>
+
+            <article class="project-card">
+                <div class="project-content">
+                    <span class="project-date">Oct 2025 - Dec 2025</span>
+                    <h3>Automated Network Deployment for Healthcare Expansion</h3>
+                    <p>
+                        Architected automated Azure Virtual WAN solution for 15+ healthcare clinics, implementing zero-touch deployments via Terraform and Python framework. 
+                        Configured ExpressRoute with automated failover for enterprise-grade reliability and HIPAA compliance.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Azure Virtual WAN</span>
+                        <span class="tech-tag">Terraform</span>
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">ExpressRoute</span>
+                        <span class="tech-tag">HIPAA</span>
+                    </div>
+                    <div class="project-metrics">
+                        <div class="metric">
+                            <span class="metric-value">3 weeks → 1 day</span>
+                            <span class="metric-label">Provisioning Time</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-value">99.97%</span>
+                            <span class="metric-label">Uptime Achieved</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-value">15+</span>
+                            <span class="metric-label">Clinics Deployed</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-status">
+                    <span class="status-indicator">
+                        <span class="status-dot"></span>
+                        Completed
+                    </span>
+                </div>
+            </article>
+
+            <article class="project-card">
+                <div class="project-content">
+                    <span class="project-date">Sep 2025 - Oct 2025</span>
+                    <h3>Multi-Tenant O365 Automation & Governance</h3>
+                    <p>
+                        Engineered comprehensive O365 backup automation protecting critical business data using Azure Automation and Microsoft Graph API. 
+                        Deployed Microsoft Sentinel with custom analytics rules and automated response integration for proactive security monitoring.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Azure Automation</span>
+                        <span class="tech-tag">Microsoft Graph API</span>
+                        <span class="tech-tag">Sentinel</span>
+                        <span class="tech-tag">Logic Apps</span>
+                        <span class="tech-tag">Azure Lighthouse</span>
+                    </div>
+                    <div class="project-metrics">
+                        <div class="metric">
+                            <span class="metric-value">45+</span>
+                            <span class="metric-label">Mailboxes Protected</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-value">35+</span>
+                            <span class="metric-label">SharePoint Sites</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-value">250+</span>
+                            <span class="metric-label">Compliance Findings Remediated</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-status">
+                    <span class="status-indicator">
+                        <span class="status-dot"></span>
+                        Completed
+                    </span>
+                </div>
+            </article>
+
+            <article class="project-card">
+                <div class="project-content">
+                    <span class="project-date">Apr 2025 - Jun 2025</span>
+                    <h3>Scalable Healthcare Application Infrastructure</h3>
+                    <p>
+                        Implemented and managed Azure infrastructure for a US healthcare application using App Service and AKS. 
+                        Built robust CI/CD pipelines via GitHub Actions and Azure DevOps for automated image builds, validation, and staged deployments ensuring HIPAA compliance.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Azure App Service</span>
+                        <span class="tech-tag">AKS</span>
+                        <span class="tech-tag">GitHub Actions</span>
+                        <span class="tech-tag">Azure DevOps</span>
+                        <span class="tech-tag">Containers</span>
+                    </div>
+                    <div class="project-metrics">
+                        <div class="metric">
+                            <span class="metric-value">HIPAA</span>
+                            <span class="metric-label">Compliance Achieved</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-value">High Availability</span>
+                            <span class="metric-label">Architecture</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-status">
+                    <span class="status-indicator">
+                        <span class="status-dot"></span>
+                        Completed
+                    </span>
+                </div>
+            </article>
+
+            <article class="project-card">
+                <div class="project-content">
+                    <span class="project-date">Jan 2025 - Mar 2025</span>
+                    <h3>Security Hardening & Compliance Assessment</h3>
+                    <p>
+                        Implemented secure Azure Hub-Spoke network topology with NSGs, ASGs, and Azure Firewall for least-privilege access. 
+                        Conducted comprehensive compliance review against Microsoft Azure Security Baseline, mapping findings to NIST 800-01 and ISO 27001 standards.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Hub-Spoke Topology</span>
+                        <span class="tech-tag">Azure Firewall</span>
+                        <span class="tech-tag">NSG/ASG</span>
+                        <span class="tech-tag">NIST 800-01</span>
+                        <span class="tech-tag">ISO 27001</span>
+                    </div>
+                    <div class="project-metrics">
+                        <div class="metric">
+                            <span class="metric-value">Zero Trust</span>
+                            <span class="metric-label">Architecture</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-value">Qatar</span>
+                            <span class="metric-label">Production Tenant</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-status">
+                    <span class="status-indicator">
+                        <span class="status-dot"></span>
+                        Completed
+                    </span>
+                </div>
+            </article>
+
+            <article class="project-card">
+                <div class="project-content">
+                    <span class="project-date">Nov 2024 - Nov 2025</span>
+                    <h3>Voicemail Automation Workflow</h3>
+                    <p>
+                        Built an intelligent Power Automate flow triggered by shared voicemail emails to extract caller details and send structured alerts to Teams and Outlook. 
+                        Automated call logging and significantly improved response speed for the support team.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Power Automate</span>
+                        <span class="tech-tag">Microsoft Teams</span>
+                        <span class="tech-tag">Outlook</span>
+                        <span class="tech-tag">Workflow Automation</span>
+                    </div>
+                    <div class="project-metrics">
+                        <div class="metric">
+                            <span class="metric-value">Automated</span>
+                            <span class="metric-label">Call Logging</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-value">Faster</span>
+                            <span class="metric-label">Response Time</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-status">
+                    <span class="status-indicator">
+                        <span class="status-dot"></span>
+                        Active
+                    </span>
+                </div>
+            </article>
+
+        </div>
+    </section>
+
+    <section class="experience" id="experience">
+        <div class="section-header">
+            <p class="section-label">Career Journey</p>
+            <h2 class="section-title">Professional Experience</h2>
+        </div>
+        <div class="timeline">
+            <div class="timeline-item">
+                <span class="timeline-date">Nov 2024 - Present</span>
+                <h3>Advanced System Administrator</h3>
+                <p class="timeline-company">Cloud & Project Management Team | Innovation Technology By Design</p>
+                <ul>
+                    <li>Built reusable Terraform module library for multi-tenant Azure deployments — standardized infrastructure across 62+ clients</li>
+                    <li>Automated remediation of non-compliant resources using Ansible playbooks, reducing remediation time from days to hours</li>
+                    <li>Led design and deployment of auto-scaling Azure infrastructure for Citrix virtual app servers with VM Scale Sets</li>
+                    <li>Developed Azure Automation Runbooks for scheduled VM maintenance, saving 50+ manual hours monthly</li>
+                    <li>Implemented proactive monitoring via Logic Apps for Azure Service Health alerts and Key Vault expiry notifications</li>
+                    <li>Achieved 10-15% reduction in cloud spend through targeted cost optimizations</li>
+                </ul>
+            </div>
+            <div class="timeline-item">
+                <span class="timeline-date">Nov 2020 - Nov 2024</span>
+                <h3>Senior System Administrator</h3>
+                <p class="timeline-company">Cloud Infrastructure & Operations | Innovation Technology By Design</p>
+                <ul>
+                    <li>Led technical onboarding for 15+ new clients, reducing time-to-production from 3 weeks to 1 week</li>
+                    <li>Architected Azure Site Recovery solution with 20 TB replication storage and 2-hour file restore SLA</li>
+                    <li>Executed production SQL Server migrations including databases with 790M+ row tables</li>
+                    <li>Implemented monitoring solutions reducing Mean Time to Detection (MTTD) by 60%</li>
+                    <li>Provided 24/7 on-call support with average incident resolution time of 2 hours for P1 issues</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="certifications" id="certifications">
+        <div class="section-header">
+            <p class="section-label">Credentials</p>
+            <h2 class="section-title">Certifications</h2>
+        </div>
+        <div class="certs-grid">
+            <div class="cert-card">
+                <div class="cert-badge">AZ-104</div>
+                <h3>Azure Administrator Associate</h3>
+                <p>Microsoft Certified</p>
+            </div>
+            <div class="cert-card">
+                <div class="cert-badge">AZ-900</div>
+                <h3>Azure Fundamentals</h3>
+                <p>Microsoft Certified</p>
+            </div>
+            <div class="cert-card">
+                <div class="cert-badge">SC-900</div>
+                <h3>Security, Compliance & Identity</h3>
+                <p>Microsoft Certified</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact" id="contact">
+        <div class="section-header">
+            <p class="section-label">Get In Touch</p>
+            <h2 class="section-title">Let's Connect</h2>
+        </div>
+        <div class="contact-content">
+            <div class="contact-info">
+                <h2>Ready to build something great?</h2>
+                <p>
+                    I'm always interested in discussing cloud architecture, automation challenges, 
+                    or opportunities to help organizations scale their infrastructure. 
+                    Let's talk about how we can work together.
+                </p>
+                <div class="contact-links">
+                    <a href="mailto:shankarrahul37@gmail.com" class="contact-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                            <polyline points="22,6 12,13 2,6"/>
+                        </svg>
+                        shankarrahul37@gmail.com
+                    </a>
+                    <a href="tel:+918360053747" class="contact-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                        </svg>
+                        +91 8360053747
+                    </a>
+                    <a href="https://github.com/rahulshankar" class="contact-link" target="_blank">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+                        </svg>
+                        github.com/rahulshankar
+                    </a>
+                    <a href="https://linkedin.com/in/rahulshankar" class="contact-link" target="_blank">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+                            <rect x="2" y="9" width="4" height="12"/>
+                            <circle cx="4" cy="4" r="2"/>
+                        </svg>
+                        linkedin.com/in/rahulshankar
+                    </a>
+                </div>
+            </div>
+            <div class="terminal-card">
+                <div class="terminal-header">
+                    <span class="terminal-dot red"></span>
+                    <span class="terminal-dot yellow"></span>
+                    <span class="terminal-dot green"></span>
+                </div>
+                <div class="terminal-body">
+                    <div class="terminal-line">
+                        <span class="terminal-prompt">$ </span>
+                        <span class="terminal-command">terraform init</span>
+                    </div>
+                    <div class="terminal-line">
+                        <span class="terminal-output">Initializing provider plugins...</span>
+                    </div>
+                    <div class="terminal-line">
+                        <span class="terminal-prompt">$ </span>
+                        <span class="terminal-command">terraform apply -auto-approve</span>
+                    </div>
+                    <div class="terminal-line">
+                        <span class="terminal-output">Apply complete! Resources: 62 added</span>
+                    </div>
+                    <div class="terminal-line">
+                        <span class="terminal-prompt">$ </span>
+                        <span class="terminal-command" style="animation: blink 1s step-end infinite;">_</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>Built with <span>♥</span> and Infrastructure as Code | © 2025 Rahul Shankar</p>
+    </footer>
+
+</body>
+</html>
