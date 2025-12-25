@@ -273,6 +273,70 @@
             flex-wrap: wrap;
         }
 
+        .testimonial-container {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .testimonial-float {
+            flex: 1;
+            min-width: 280px;
+            max-width: 400px;
+            padding: 1.5rem 2rem;
+            background: rgba(22, 22, 31, 0.8);
+            border: 1px solid var(--border-color);
+            border-left: 3px solid var(--accent-cyan);
+            border-radius: 12px;
+            position: relative;
+            backdrop-filter: blur(10px);
+        }
+
+        .testimonial-float.achievement {
+            border-left-color: var(--accent-green);
+        }
+
+        .testimonial-float.achievement::before {
+            color: var(--accent-green);
+        }
+
+        .testimonial-float::before {
+            content: '"';
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            font-size: 4rem;
+            font-family: Georgia, serif;
+            color: var(--accent-cyan);
+            opacity: 0.3;
+            line-height: 1;
+        }
+
+        .testimonial-float blockquote {
+            font-size: 1rem;
+            font-style: italic;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin: 0;
+        }
+
+        .testimonial-float cite {
+            display: block;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            font-style: normal;
+            color: var(--text-muted);
+        }
+
+        .testimonial-float cite strong {
+            color: var(--accent-cyan);
+        }
+
+        .testimonial-float.achievement cite strong {
+            color: var(--accent-green);
+        }
+
         .btn {
             padding: 1rem 2rem;
             font-family: var(--font-mono);
@@ -506,6 +570,54 @@
             display: flex;
             gap: 2rem;
             flex-wrap: wrap;
+        }
+
+        .project-details {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .project-details ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .project-details li {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .project-details li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent-cyan);
+        }
+
+        .project-card.featured {
+            border-color: rgba(0, 212, 255, 0.4);
+            background: linear-gradient(135deg, rgba(22, 22, 31, 1) 0%, rgba(0, 120, 212, 0.05) 100%);
+        }
+
+        .project-card.featured::before {
+            content: 'RECENT';
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: var(--accent-cyan);
+            padding: 0.25rem 0.75rem;
+            background: rgba(0, 212, 255, 0.15);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 4px;
+            letter-spacing: 0.1em;
         }
 
         .metric {
@@ -917,6 +1029,20 @@
                 </a>
                 <a href="#contact" class="btn btn-secondary">Get in Touch</a>
             </div>
+            <div class="testimonial-container">
+                <div class="testimonial-float">
+                    <blockquote>
+                        "Rahul has the eagerness to grow and learn. Has the go-get-it attitude which is great."
+                    </blockquote>
+                    <cite>— <strong>Project Manager</strong>, ITBD</cite>
+                </div>
+                <div class="testimonial-float achievement">
+                    <blockquote>
+                        "Delivered the first-ever Infrastructure as Code deployment from Professional Services at ITBD — reducing deployment time from days to under 75 minutes."
+                    </blockquote>
+                    <cite>🏆 <strong>Milestone Achievement</strong></cite>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -1140,6 +1266,56 @@
                 </div>
             </article>
 
+            <article class="project-card featured">
+                <div class="project-content">
+                    <span class="project-date">Dec 2024</span>
+                    <h3>Enterprise Firewall Migration: SonicWall to Meraki</h3>
+                    <p>
+                        Led a large-scale firewall migration project, transitioning 8 SonicWall firewalls to Cisco Meraki MX appliances for a client network. 
+                        Engineered custom firewall rules, configured complex network segmentation, and established secure site-to-site connectivity while ensuring zero downtime during the transition.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Cisco Meraki MX</span>
+                        <span class="tech-tag">SonicWall</span>
+                        <span class="tech-tag">VLANs</span>
+                        <span class="tech-tag">S2S VPN</span>
+                        <span class="tech-tag">DHCP</span>
+                        <span class="tech-tag">Firewall Rules</span>
+                    </div>
+                    <div class="project-metrics">
+                        <div class="metric">
+                            <span class="metric-value">8</span>
+                            <span class="metric-label">Firewalls Migrated</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-value">40+</span>
+                            <span class="metric-label">VLANs Configured</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-value">16+</span>
+                            <span class="metric-label">Custom Rules</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-value">15</span>
+                            <span class="metric-label">Site-to-Site VPNs</span>
+                        </div>
+                    </div>
+                    <div class="project-details">
+                        <ul>
+                            <li>Configured 80+ WAN connections across multiple sites</li>
+                            <li>Implemented DHCP services for seamless IP management</li>
+                            <li>Created client-network segmentation for enhanced security</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="project-status">
+                    <span class="status-indicator">
+                        <span class="status-dot"></span>
+                        Completed
+                    </span>
+                </div>
+            </article>
+
             <article class="project-card">
                 <div class="project-content">
                     <span class="project-date">Jan 2025 - Mar 2025</span>
@@ -1282,12 +1458,12 @@
                     Let's talk about how we can work together.
                 </p>
                 <div class="contact-links">
-                    <a href="mailto:shankarrahul37@gmail.com" class="contact-link">
+                    <a href="/cdn-cgi/l/email-protection#17647f76797c766565767f627b242057707a767e7b3974787a" class="contact-link">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
                             <polyline points="22,6 12,13 2,6"/>
                         </svg>
-                        shankarrahul37@gmail.com
+                        <span class="__cf_email__" data-cfemail="e6958e87888d879494878e938ad5d1a6818b878f8ac885898b">[email&#160;protected]</span>
                     </a>
                     <a href="tel:+918360053747" class="contact-link">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1339,11 +1515,4 @@
                 </div>
             </div>
         </div>
-    </section>
-
-    <footer>
-        <p>Built with <span>♥</span> and Infrastructure as Code | © 2025 Rahul Shankar</p>
-    </footer>
-
-</body>
-</html>
+    </sec
